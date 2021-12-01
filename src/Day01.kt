@@ -1,19 +1,17 @@
 fun main() {
     fun part1(input: List<String>): Int {
-        val parsedInput = input.toIntList()
-
-        return parsedInput
-            .dropLast(1)
-            .filterIndexed { index, element -> element < parsedInput[index + 1] }
+        return input.toIntList()
+            .windowed(2, 1)
+            .filter { it[0] < it[1] }
             .size
     }
 
     fun part2(input: List<String>): Int {
-        val parsedInput = input.toIntList()
-
-        return parsedInput
-            .dropLast(3)
-            .filterIndexed { index, _ -> parsedInput.subList(index, index + 3).sum() < parsedInput.subList(index + 1, index + 1 + 3).sum() }
+        return input.toIntList()
+            .windowed(3, 1)
+            .map { it.sum() }
+            .windowed(2, 1)
+            .filter { it[0] < it[1] }
             .size
     }
 
