@@ -4,39 +4,30 @@ import Directions.UP
 
 fun main() {
     fun part1(input: List<String>): Int {
-        var depth = 0
-        var horizontal = 0
-
-        input.toDirectionAmountPairList()
-            .forEach { (direction, amount) ->
+        return input.toDirectionAmountPairList()
+            .fold(Submarine(0, 0, 0)) { acc, (direction, amount) ->
                 when (direction) {
-                    DOWN -> depth += amount
-                    FORWARD -> horizontal += amount
-                    UP -> depth -= amount
+                    DOWN -> acc.apply { depth += amount }
+                    FORWARD -> acc.apply { horizontal += amount }
+                    UP -> acc.apply { depth -= amount }
                 }
             }
-
-        return horizontal * depth
+            .let { it.horizontal * it.depth}
     }
 
     fun part2(input: List<String>): Int {
-        var depth = 0
-        var horizontal = 0
-        var aim = 0
-
-        input.toDirectionAmountPairList()
-            .forEach { (direction, amount) ->
+        return input.toDirectionAmountPairList()
+            .fold(Submarine(0, 0, 0)) { acc, (direction, amount) ->
                 when (direction) {
-                    DOWN -> aim += amount
-                    FORWARD -> {
+                    DOWN -> acc.apply { aim += amount }
+                    FORWARD -> acc.apply {
                         horizontal += amount
                         depth += aim * amount
                     }
-                    UP -> aim -= amount
+                    UP -> acc.apply { aim -= amount }
                 }
             }
-
-        return horizontal * depth
+            .let { it.horizontal * it.depth }
     }
 
     // test if implementation meets criteria from the description, like:
@@ -49,6 +40,12 @@ fun main() {
     println(part2(input))
 
 }
+
+private data class Submarine(
+    var aim: Int,
+    var depth: Int,
+    var horizontal: Int
+)
 
 private fun List<String>.toDirectionAmountPairList(): List<Pair<Directions, Int>> = this
     .filter { it.isNotBlank() }
