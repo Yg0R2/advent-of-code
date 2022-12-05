@@ -14,15 +14,15 @@ fun main() {
     }
 
     fun part2(input: List<String>): Int {
-        val oxygenGeneratorRating = filterBy(input, 0) {
-                _input, _stringIndex -> _input.getMostCommonBit(_stringIndex)
-            }
+        val oxygenGeneratorRating = filterBy(input, 0) { _input, _stringIndex ->
+            _input.getMostCommonBit(_stringIndex)
+        }
             .first()
             .toInt(2)
 
-        val co2ScrubberRating = filterBy(input, 0) {
-                _input, _stringIndex -> _input.getLeastCommonBit(_stringIndex)
-            }
+        val co2ScrubberRating = filterBy(input, 0) { _input, _stringIndex ->
+            _input.getLeastCommonBit(_stringIndex)
+        }
             .first()
             .toInt(2)
 
