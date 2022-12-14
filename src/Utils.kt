@@ -15,10 +15,10 @@ fun String.md5() = BigInteger(1, MessageDigest.getInstance("MD5").digest(toByteA
     .toString(16)
     .padStart(32, '0')
 
-fun checkResult(
+fun <T> checkResult(
     testName: String,
-    expectedResult: Int,
-    resultProvider: () -> Int,
+    expectedResult: T,
+    resultProvider: () -> T,
 ) {
     with(resultProvider()) {
         println("$testName: $this")
