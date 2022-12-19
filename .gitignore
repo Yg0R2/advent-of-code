@@ -3,4 +3,4 @@
 build
 
 *.txt
-!*_test.txt
+!*_test*.txt
