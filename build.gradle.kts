@@ -2,12 +2,8 @@ plugins {
     kotlin("jvm") version "1.7.22"
 }
 
-allprojects {
-    plugins.apply("org.jetbrains.kotlin.jvm")
-
-    repositories {
-        mavenCentral()
-    }
+repositories {
+    mavenCentral()
 }
 
 tasks {

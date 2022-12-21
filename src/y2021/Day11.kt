@@ -1,3 +1,5 @@
+package y2021
+
 fun main() {
     fun part1(input: List<String>): Int {
         val grid: Array<Array<Int>> = input.toGrid()

@@ -1,6 +1,8 @@
-import Directions.DOWN
-import Directions.FORWARD
-import Directions.UP
+package y2021
+
+import y2021.Directions.DOWN
+import y2021.Directions.FORWARD
+import y2021.Directions.UP
 
 fun main() {
     fun part1(input: List<String>): Int {

@@ -1,3 +1,5 @@
+package y2021
+
 fun main() {
     fun part1(input: List<String>): Long {
         val fishTank = FishTank(input)

@@ -1,3 +1,5 @@
+package y2021
+
 import kotlin.math.max
 
 fun main() {
