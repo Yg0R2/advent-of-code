@@ -1,4 +1,5 @@
 import utils.Logger
+import utils.readInput
 import java.time.LocalDate
 
 abstract class DayX<T>(
@@ -53,7 +54,7 @@ abstract class DayX<T>(
                 .let { it as DayX<*> }
 
             if (args.isNotEmpty()) {
-                Logger.isDebugEnabled = args.contains ("--debug")
+                Logger.isDebugEnabled = args.contains("--debug")
             }
 
             dayX.run()
