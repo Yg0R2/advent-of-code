@@ -1,16 +1,17 @@
 package y2022
 
 import DayX
+import common.Grid
 import common.Grid.Companion.toGrid
 
 class Day08 : DayX<Int>(21, 8) {
 
     override fun part1(input: List<String>): Int {
-        val grid: Array<Array<Int>> = input.initializeGrid()
+        val grid = input.initializeGrid()
 
         var visibleTreesCount = 0
-        for (row: Int in grid.indices) {
-            for (column: Int in grid[row].indices) {
+        for (row: Int in grid.getRowIndices()) {
+            for (column: Int in grid.getColumnIndices(row)) {
                 if (grid.isVisibleFromEdge(row, column)) {
                     visibleTreesCount++
                 }
@@ -21,11 +22,11 @@ class Day08 : DayX<Int>(21, 8) {
     }
 
     override fun part2(input: List<String>): Int {
-        val grid: Array<Array<Int>> = input.initializeGrid()
+        val grid = input.initializeGrid()
 
         var maxScenicScore = 0
-        for (row: Int in grid.indices) {
-            for (column: Int in grid[row].indices) {
+        for (row: Int in grid.getRowIndices()) {
+            for (column: Int in grid.getColumnIndices(row)) {
                 val scenicScore = grid.getScenicScore(row, column)
 
                 if (scenicScore > maxScenicScore) {
@@ -38,29 +39,30 @@ class Day08 : DayX<Int>(21, 8) {
     }
 
     companion object {
-        fun Array<Array<Int>>.getScenicScore(row: Int, column: Int): Int {
-            val currentTree = this[row][column]
+        fun Grid<Int>.getScenicScore(row: Int, column: Int): Int {
+            val currentTree = get(row, column)
 
-            return (column - 1 downTo 0).takeUntil { this[row][it] < currentTree }.count() * // LEFT
-                    IntRange(column + 1, size - 1).takeUntil { this[row][it] < currentTree }.count() * // RIGHT
-                    (row - 1 downTo 0).takeUntil { this[it][column] < currentTree }.count() * // UP
-                    IntRange(row + 1, this[row].size - 1).takeUntil { this[it][column] < currentTree }.count() // DOWN
+            return (column - 1 downTo 0).takeUntil { get(row, it) < currentTree }.count() * // LEFT
+                    IntRange(column + 1, getRowSize() - 1).takeUntil { get(row, it) < currentTree }.count() * // RIGHT
+                    (row - 1 downTo 0).takeUntil { get(it, column) < currentTree }.count() * // UP
+                    IntRange(row + 1, getColumnSize(row) - 1).takeUntil { get(it, column) < currentTree }
+                        .count() // DOWN
         }
 
-        private fun List<String>.initializeGrid(): Array<Array<Int>> =
-            toGrid { it.digitToInt() }.gridMap
+        private fun List<String>.initializeGrid(): Grid<Int> =
+            toGrid { it.digitToInt() }
 
-        fun Array<Array<Int>>.isVisibleFromEdge(row: Int, column: Int): Boolean {
-            if ((row == 0) || (row == size - 1) || (column == 0) || (column == this[row].size - 1)) {
+        private fun Grid<Int>.isVisibleFromEdge(row: Int, column: Int): Boolean {
+            if ((row == 0) || (row == getRowSize() - 1) || (column == 0) || (column == getColumnSize(row) - 1)) {
                 return true
             }
 
-            val currentTree = this[row][column]
+            val currentTree = get(row, column)
 
-            return IntRange(0, column - 1).none { this[row][it] >= currentTree } || // LEFT
-                    IntRange(column + 1, size - 1).none { this[row][it] >= currentTree } || // RIGHT
-                    IntRange(0, row - 1).none { this[it][column] >= currentTree } || // UP
-                    IntRange(row + 1, this[row].size - 1).none { this[it][column] >= currentTree } // DOWN
+            return IntRange(0, column - 1).none { get(row, it) >= currentTree } || // LEFT
+                    IntRange(column + 1, getRowSize() - 1).none { get(row, it) >= currentTree } || // RIGHT
+                    IntRange(0, row - 1).none { get(it, column) >= currentTree } || // UP
+                    IntRange(row + 1, getColumnSize(row) - 1).none { get(it, column) >= currentTree } // DOWN
         }
 
         private inline fun <T> Iterable<T>.takeUntil(predicate: (T) -> Boolean): List<T> {

@@ -1,20 +1,20 @@
 package common
 
 class Grid<T> (
-    val gridMap: Array<Array<T>>
+    private val gridMap: Array<Array<T>>
 ) {
 
     fun get(location: Location): T =
-        gridMap[location.y][location.x]
+        gridMap[location.row][location.column]
 
     fun get(row: Int, column: Int) =
-        gridMap[column][row]
+        gridMap[row][column]
 
-    fun getLocation(square: T): Location {
-        gridMap.forEachIndexed { y, line ->
-            line.forEachIndexed { x, cell ->
+    fun getLocationOf(square: T): Location {
+        gridMap.forEachIndexed { rowIndex, line ->
+            line.forEachIndexed { columnIndex, cell ->
                 if (cell == square) {
-                    return Location(x, y)
+                    return Location(columnIndex, rowIndex)
                 }
             }
         }
@@ -22,10 +22,16 @@ class Grid<T> (
         throw IllegalArgumentException("Grid does not have a start (S) position.")
     }
 
-    fun getXSize(): Int =
-        gridMap[0].size
+    fun getColumnIndices(rowIndex: Int = 0): IntRange =
+        gridMap[rowIndex].indices
 
-    fun getYSize(): Int =
+    fun getColumnSize(rowIndex: Int = 0): Int =
+        gridMap[rowIndex].size
+
+    fun getRowIndices(): IntRange =
+        gridMap.indices
+
+    fun getRowSize(): Int =
         gridMap.size
 
     companion object {
@@ -40,6 +46,20 @@ class Grid<T> (
 }
 
 data class Location(
-    val x: Int,
-    val y: Int
-)
+    val column: Int,
+    val row: Int
+) {
+
+    fun moveDown(step: Int = 1): Location =
+        copy(row = row + step)
+
+    fun moveLeft(step: Int = 1): Location =
+        copy(column = column - step)
+
+    fun moveRight(step: Int = 1): Location =
+        copy(column = column + step)
+
+    fun moveUp(step: Int = 1): Location =
+        copy(row = row - step)
+
+}

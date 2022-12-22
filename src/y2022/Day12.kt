@@ -23,8 +23,8 @@ class Day12 : DayX<Int>(31, 0) {
             }
         }
 
-        val startLocation = grid.getLocation(S_CODE)
-        val endLocation = grid.getLocation(E_CODE)
+        val startLocation = grid.getLocationOf(S_CODE)
+        val endLocation = grid.getLocationOf(E_CODE)
 
         steps = mutableListOf()
 
@@ -53,8 +53,8 @@ class Day12 : DayX<Int>(31, 0) {
         } else if (!previousLocations.contains(currentLocation)) {
             val canMoveRange = with(grid.get(currentLocation)) { (this..this + 1) }
 
-            val rightLocation = Location(currentLocation.x + 1, currentLocation.y)
-            if ((currentLocation.x + 1 < grid.getXSize()) && (grid.get(rightLocation) in canMoveRange)) {
+            val rightLocation = currentLocation.moveRight()
+            if ((rightLocation.column < grid.getColumnSize()) && (grid.get(rightLocation) in canMoveRange)) {
                 with(move(grid, rightLocation, newPreviousLocations, endLocation, (stepCount + 1))) {
                     if (size > newPreviousLocations.size) {
                         return this
@@ -62,8 +62,8 @@ class Day12 : DayX<Int>(31, 0) {
                 }
             }
 
-            val leftLocation = Location(currentLocation.x - 1, currentLocation.y)
-            if ((currentLocation.x - 1 >= 0) && (grid.get(leftLocation) in canMoveRange)) {
+            val leftLocation = currentLocation.moveLeft()
+            if ((leftLocation.column >= 0) && (grid.get(leftLocation) in canMoveRange)) {
                 with(move(grid, leftLocation, newPreviousLocations, endLocation, (stepCount + 1))) {
                     if (size > newPreviousLocations.size) {
                         return this
@@ -71,8 +71,8 @@ class Day12 : DayX<Int>(31, 0) {
                 }
             }
 
-            val downLocation = Location(currentLocation.x, currentLocation.y + 1)
-            if ((currentLocation.y + 1 < grid.getYSize()) && (grid.get(downLocation) in canMoveRange)) {
+            val downLocation = currentLocation.moveDown()
+            if ((downLocation.row < grid.getRowSize()) && (grid.get(downLocation) in canMoveRange)) {
                 with(move(grid, downLocation, newPreviousLocations, endLocation, (stepCount + 1))) {
                     if (size > newPreviousLocations.size) {
                         return this
@@ -80,8 +80,8 @@ class Day12 : DayX<Int>(31, 0) {
                 }
             }
 
-            val upLocation = Location(currentLocation.x, currentLocation.y - 1)
-            if ((currentLocation.y - 1 >= 0) && (grid.get(upLocation) in canMoveRange)) {
+            val upLocation = currentLocation.moveUp()
+            if ((upLocation.row >= 0) && (grid.get(upLocation) in canMoveRange)) {
                 with(move(grid, upLocation, newPreviousLocations, endLocation, (stepCount + 1))) {
                     if (size > newPreviousLocations.size) {
                         return this
