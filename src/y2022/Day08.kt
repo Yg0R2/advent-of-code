@@ -1,6 +1,7 @@
 package y2022
 
 import DayX
+import common.Grid.Companion.toGrid
 
 class Day08 : DayX<Int>(21, 8) {
 
@@ -47,11 +48,7 @@ class Day08 : DayX<Int>(21, 8) {
         }
 
         private fun List<String>.initializeGrid(): Array<Array<Int>> =
-            map { line ->
-                line.toCharArray()
-                    .map { it.digitToInt() }
-                    .toTypedArray()
-            }.toTypedArray()
+            toGrid { it.digitToInt() }.gridMap
 
         fun Array<Array<Int>>.isVisibleFromEdge(row: Int, column: Int): Boolean {
             if ((row == 0) || (row == size - 1) || (column == 0) || (column == this[row].size - 1)) {
