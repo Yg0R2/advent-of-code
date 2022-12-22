@@ -4,13 +4,22 @@ import java.time.LocalDate
 
 abstract class DayX<T>(
     private val testPart1ExpectedResults: List<T>,
-    private val testPart2ExpectedResults: List<T>
+    private val testPart2ExpectedResults: List<T>,
+    private val part1InvalidResults: List<T> = emptyList(),
+    private val part2InvalidResults: List<T> = emptyList()
 ) {
 
     constructor(
         testPart1ExpectedResult: T,
-        testPart2ExpectedResult: T
-    ) : this(listOf(testPart1ExpectedResult), listOf(testPart2ExpectedResult))
+        testPart2ExpectedResult: T,
+        part1InvalidResult: T? = null,
+        part2InvalidResult: T? = null
+    ) : this(
+        listOf(testPart1ExpectedResult),
+        listOf(testPart2ExpectedResult),
+        listOfNotNull(part1InvalidResult),
+        listOfNotNull(part2InvalidResult)
+    )
 
     private val inputName = javaClass.name.replace(".", "/")
 
@@ -37,8 +46,20 @@ abstract class DayX<T>(
         }
 
         val input = readInput(inputName)
-        println(part1(input))
-        println(part2(input))
+        with(part1(input)) {
+            println("part1: $this")
+
+            part1InvalidResults.forEach {
+                check(it != this)
+            }
+        }
+        with(part2(input)) {
+            println("part2: $this")
+
+            part2InvalidResults.forEach {
+                check(it != this)
+            }
+        }
     }
 
     protected abstract fun part1(input: List<String>): T

@@ -17,3 +17,7 @@ tasks {
         gradleVersion = "7.6"
     }
 }
+
+dependencies {
+    implementation("com.fasterxml.jackson.module", "jackson-module-kotlin", "+")
+}
